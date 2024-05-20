@@ -1,0 +1,38 @@
+﻿<Window x:Class="LocalConverseClient.Net.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LocalConverseClient.Net"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Collapsible Menu Pane -->
+        <DockPanel Grid.Column="0" Background="LightGray">
+            <ToggleButton x:Name="ToggleButton" Width="20" Content=">" DockPanel.Dock="Left" 
+                          Click="ToggleButton_Click" />
+            <StackPanel x:Name="MenuPanel" Width="200" VerticalAlignment="Bottom">
+                <Button Content="Chat" Height="Auto" 
+                        Name="ChatPageButton"
+                        Click="Button_Click"/>
+                <Button Content="Settings" 
+                        Name="SettingsPageButton"
+                        Click="Button_Click"/>
+                <Button Content="Credits"  
+                        Name="WelcomePageButton"
+                        Click="Button_Click"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" Background="White">
+            <!-- Your main content here -->
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        </Grid>
+    </Grid>
+</Window>

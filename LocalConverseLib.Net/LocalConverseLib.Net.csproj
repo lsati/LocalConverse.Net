@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LLamaSharp" Version="0.12.0" />
+    <PackageReference Include="LLamaSharp.Backend.Cpu" Version="0.12.0" />
+    <PackageReference Include="LLamaSharp.Backend.Cuda11" Version="0.12.0" />
+    <PackageReference Include="LLamaSharp.Backend.Cuda12" Version="0.12.0" />
+  </ItemGroup>
+
+</Project>
