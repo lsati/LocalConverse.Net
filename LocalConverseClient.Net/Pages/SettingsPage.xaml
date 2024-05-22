@@ -9,10 +9,49 @@
       Title="SettingsPage">
 
     <Grid>
-        <StackPanel HorizontalAlignment="Center"
-             VerticalAlignment="Center">
-            <TextBlock FontSize="30"
-                TextAlignment="Center">Settings</TextBlock>            
-        </StackPanel>
+
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+
+
+            <Label Grid.Row="1"
+                    Grid.Column="0" VerticalAlignment="Top" 
+                       VerticalContentAlignment="Center">ModelDirectory</Label>
+            <TextBox Grid.Column="1" Grid.Row="1" Name="ModelsDirectoryTb"
+                         VerticalContentAlignment="Center">.\Models</TextBox>
+            <TextBlock Grid.Row="2" Grid.Column="1" Name="ModelDirectoryLink"
+                       Margin="0,5">
+                <Hyperlink Click="ModelDirectoryLink_Click">Open in explorer</Hyperlink>
+            </TextBlock>
+
+
+            <Label Grid.Row="3" 
+                   Grid.Column="0" VerticalAlignment="Top" 
+                   VerticalContentAlignment="Center">Select a Model</Label>
+            <ComboBox Name="AvailableModels" Grid.Column="1" Grid.Row="3"/>
+            <Label Grid.Row="4" Grid.Column="1" Name="EmptyModelLabel">
+            </Label>
+
+            <Button x:Name="SaveBtn"  HorizontalAlignment="Right"
+                    MinWidth="100" Margin="5"
+                    Grid.Row="5" Grid.Column="1"
+                    Click="SaveBtn_Click"
+                    >Save</Button>
+        </Grid>
+
+
     </Grid>
-</Page>
+</Page> 

@@ -16,6 +16,9 @@ namespace LocalConverseLib.Net
         private readonly SemaphoreSlim semaphore;
         private string userRequest;
 
+        private CancellationTokenSource cancellationTokenSource;
+        private CancellationToken cancellationToken;
+
         public LLMClient()
         {
             this.semaphore = new SemaphoreSlim(0);
@@ -24,8 +27,15 @@ namespace LocalConverseLib.Net
 
         public void SubmitUserRequest(string userRequest)
         {
-            this.userRequest += userRequest;
+            this.userRequest = userRequest;
             this.semaphore.Release();
+        }
+
+
+        public void CancelGeneration()
+        {
+            this.userRequest = string.Empty;
+            this.cancellationTokenSource?.Cancel();
         }
 
         public async Task StartChatListener(LLMConfig config,
@@ -35,8 +45,8 @@ namespace LocalConverseLib.Net
         {
             var parameters = new ModelParams(config.ModelPath)
             {
-                ContextSize = 1024, // The longest length of chat as memory.
-                GpuLayerCount = 2// How many layers to offload to GPU. Please adjust it according to your GPU memory.
+                ContextSize = 4098, // The longest length of chat as memory.
+                GpuLayerCount = 100, // How many layers to offload to GPU. Please adjust it according to your GPU memory.
             };
 
 
@@ -54,7 +64,7 @@ namespace LocalConverseLib.Net
 
             InferenceParams inferenceParams = new InferenceParams()
             {
-                MaxTokens = 256, // No more than 256 tokens should appear in answer. Remove it if antiprompt is enough for control.
+                MaxTokens = 1024, // No more than 256 tokens should appear in answer. Remove it if antiprompt is enough for control.
                 AntiPrompts = new List<string> { "\nUser:" }, // Stop generation once antiprompts appear.
                 Temperature = 0.1f
             };
@@ -65,6 +75,9 @@ namespace LocalConverseLib.Net
             StringBuilder sb = new StringBuilder();
             while (true)
             {
+                this.cancellationTokenSource = new CancellationTokenSource();
+                this.cancellationToken = cancellationTokenSource.Token;
+
                 semaphore.Wait();
                 if (OnTokenCallback != null)
                 {
@@ -75,7 +88,7 @@ namespace LocalConverseLib.Net
                             var text
                                 in session.ChatAsync(
                                     new ChatHistory.Message(AuthorRole.User, this.userRequest),
-                                    inferenceParams))
+                                    inferenceParams, cancellationToken))
                         {
                             OnTokenCallback(text);
                             sb.Append(text);
@@ -91,5 +104,6 @@ namespace LocalConverseLib.Net
                     OnResponseCompletedCallback(sb.ToString());
             }
         }
+
     }
 }

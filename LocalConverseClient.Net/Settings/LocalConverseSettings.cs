@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace LocalConverseClient.Net.Settings
 {
-    internal class LocalConverseSettings
+    public class LocalConverseSettings
     {
         public LocalConverseSettings()
         {
@@ -47,10 +41,18 @@ namespace LocalConverseClient.Net.Settings
 
     internal static class LocalConverseSettingsManager
     {
+        private const string SettingsFile = "LocalConverse.settings";
+
         private static LocalConverseSettings settings;
 
         public static LocalConverseSettings GetInstance()
         {
+            // try to load from disk
+            if (File.Exists(SettingsFile))
+            {
+                settings = JsonConvert.DeserializeObject<LocalConverseSettings>(File.ReadAllText(SettingsFile));
+            }
+
             if (settings == null)
             {
                 Trace.TraceInformation("loading default settings");
@@ -59,6 +61,12 @@ namespace LocalConverseClient.Net.Settings
 
             settings.LoadedModels = LocalConverseSettings.LoadModels(settings.ModelDirectory);
             return settings;
+        }
+
+        public static void SaveInstance()
+        {
+            var text = JsonConvert.SerializeObject(settings, Formatting.Indented);
+            File.WriteAllText(SettingsFile, text);
         }
     }
 }

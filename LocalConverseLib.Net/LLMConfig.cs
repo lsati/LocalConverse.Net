@@ -15,11 +15,11 @@ namespace LocalConverseLib.Net
 
         public static LLMConfig Default()
         {
-            string modelPath = @"D:\models\lmstudio\QuantFactory\Meta-Llama-3-8B-Instruct-GGUF\Meta-Llama-3-8B-Instruct.Q4_0.gguf";
+            //string modelPath = @"D:\models\lmstudio\QuantFactory\Meta-Llama-3-8B-Instruct-GGUF\Meta-Llama-3-8B-Instruct.Q4_0.gguf";
 
             return new LLMConfig()
             {
-                ModelPath = modelPath
+                //ModelPath = modelPath
             };
         }
     }
