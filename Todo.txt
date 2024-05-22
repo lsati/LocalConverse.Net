@@ -1,6 +1,0 @@
-LLama sharp.net
-
-================
-* stop generation ==> done
-* settings page with settings 
-* credits page
